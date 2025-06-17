@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - TaskFlow</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        .input-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+            cursor: pointer;
+        }
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#3b82f6',secondary:'#64748b'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <div class="text-center mb-8">
+            <h1 class="font-['Pacifico'] text-4xl text-primary mb-2">logo</h1>
+            <h2 class="text-2xl font-semibold text-gray-800 mb-1">Welcome Back</h2>
+            <p class="text-gray-500">Log in to continue managing your tasks</p>
+        </div>
+        
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <form method="POST" action="{% url 'login' %}">
+                {% csrf_token %}
+                <div class="space-y-5">
+                    <div class="relative">
+                        <div class="input-icon w-5 h-5 flex items-center justify-center">
+                            <i class="ri-mail-line"></i>
+                        </div>
+                        <input type="text" placeholder="Username" name="username" class="form-input" required>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="input-icon w-5 h-5 flex items-center justify-center">
+                            <i class="ri-lock-line"></i>
+                        </div>
+                        <input type="password" id="password" placeholder="Password" name="password" class="form-input" required>
+                        <div class="password-toggle w-5 h-5 flex items-center justify-center">
+                            <i id="passwordToggle" class="ri-eye-off-line"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="flex justify-end">
+                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">Forgot password?</a>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
+                        Log In
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script id="passwordToggleScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordField = document.getElementById('password');
+            const passwordToggle = document.getElementById('passwordToggle');
+            
+            passwordToggle.addEventListener('click', function() {
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    passwordToggle.classList.remove('ri-eye-off-line');
+                    passwordToggle.classList.add('ri-eye-line');
+                } else {
+                    passwordField.type = 'password';
+                    passwordToggle.classList.remove('ri-eye-line');
+                    passwordToggle.classList.add('ri-eye-off-line');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -58,7 +58,7 @@
             <h2 class="text-2xl font-semibold text-gray-800 mb-1">Welcome Back</h2>
             <p class="text-gray-500">Log in to continue managing your tasks</p>
         </div>
-        
+
         <div class="bg-white rounded-lg shadow-md p-8">
             <form method="POST" action="{% url 'login' %}">
                 {% csrf_token %}
@@ -87,6 +87,11 @@
                     <button type="submit" class="w-full bg-primary text-white py-3 !rounded-button font-medium hover:bg-primary/90 transition-colors whitespace-nowrap">
                         Log In
                     </button>
+                    <p class="text-sm text-gray-600">
+    Don't have an account?
+    <a href="{% url 'register' %}" class="text-primary hover:underline">Register</a>
+</p>
+
                 </div>
             </form>
         </div>

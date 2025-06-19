@@ -2,6 +2,9 @@ from django.shortcuts import render,redirect
 from django.contrib import messages
 from .models import userdetails
 from django.contrib.auth import authenticate,login
+from .models import Task
+from django.contrib.auth import logout
+from django.contrib.auth import logout
 
 
 # Create your views here.
@@ -41,16 +44,37 @@ def login_view(request):
         try:
             user = userdetails.objects.get(name=username, password=password)
             messages.success(request,'login successfully')
-            return redirect('home', user.name)
+            return redirect('home',username=user.name)
         except userdetails.DoesNotExist:
             messages.error(request, "Invalid username or password")
 
     return render(request, 'login.html')
 
 
-def homepage_view(request,username):
+def homepage_view(request, username):
     user = userdetails.objects.get(name=username)
-    return render(request,'home.html',{'user':user})
+
+    total_task = Task.objects.count()
+
+    # ✅ Delete task logic
+    delete_id = request.GET.get('delete_task_id')
+    if delete_id:
+        Task.objects.filter(id=delete_id).delete()
+        return redirect('home', username=user.name)
+
+    # ✅ Add task logic
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        due_date = request.POST.get('due_date')
+        if title and due_date:
+            Task.objects.create(title=title, due_date=due_date)
+            return redirect('home', username=user.name)
+
+    tasks = Task.objects.all()
+    return render(request, 'home.html', {'user': user, 'tasks': tasks, 'total_task': total_task})
+
+
+
 
 from django.contrib.auth import logout
 
@@ -72,6 +96,15 @@ def adminlogin_view(request):
             messages.error(request, "Need admin credentials to access this page.")
                 
     return render(request, "admin.html")
+
+
+
+
+
+
+
+
+
 
         
         
